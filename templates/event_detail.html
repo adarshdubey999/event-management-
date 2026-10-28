@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event['title'] }} - Event Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Event Main Content -->
+        <div class="col-lg-8">
+            <div class="bg-white rounded-4 border p-4 shadow-sm">
+                <img src="{{ event['image_url'] }}" class="img-fluid rounded-3 mb-4 w-100" style="max-height: 380px; object-fit: cover;" alt="{{ event['title'] }}">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge-category fs-6">{{ event['category'] }}</span>
+                    <span class="text-muted small">
+                        <i class="bi bi-calendar-event me-1"></i> Posted on Campus Portal
+                    </span>
+                </div>
+
+                <h2 class="fw-bold text-dark mb-3">{{ event['title'] }}</h2>
+
+                <h5 class="fw-bold text-dark mt-4 mb-2">About This Event</h5>
+                <p class="text-muted leading-relaxed" style="white-space: pre-line;">
+                    {{ event['description'] }}
+                </p>
+
+                <h5 class="fw-bold text-dark mt-4 mb-3">Participation Rules & Guidelines</h5>
+                <div class="bg-light p-3 rounded-3 border small text-secondary">
+                    <ul class="mb-0 ps-3 space-y-1">
+                        <li>Participants must carry their valid College Identity Card.</li>
+                        <li>Please report to the venue at least 15 minutes before the scheduled start time.</li>
+                        <li>Certificates of participation will be awarded to all registered attendees.</li>
+                        <li>Decisions made by event judges and faculty coordinators will be final and binding.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Sidebar & Registration Action Box -->
+        <div class="col-lg-4">
+            <div class="bg-white rounded-4 border p-4 shadow-sm sticky-top" style="top: 90px;">
+                <h5 class="fw-bold text-dark border-bottom pb-3 mb-3">Event Overview</h5>
+
+                <div class="space-y-3 mb-4 small text-secondary">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-calendar3 text-primary fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Date</span>
+                            <span>{{ event['date'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-clock-fill text-primary fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Time</span>
+                            <span>{{ event['time'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-geo-alt-fill text-primary fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Venue</span>
+                            <span>{{ event['venue'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-person-badge-fill text-primary fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Faculty Coordinator</span>
+                            <span>{{ event['coordinator'] }}</span>
+                            {% if event['coordinator_phone'] %}
+                                <div class="text-muted small">Ph: {{ event['coordinator_phone'] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-people-fill text-primary fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Registration Status</span>
+                            <span>{{ registered_count }} / {{ event['max_participants'] }} students registered</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Actions -->
+                <div class="border-top pt-3">
+                    {% if session.get('user_id') %}
+                        {% if session.get('user_role') == 'admin' %}
+                            <div class="alert alert-info py-2 small mb-3">
+                                <i class="bi bi-shield-lock me-1"></i> You are logged in as Administrator.
+                            </div>
+                            <a href="{{ url_for('event_registrations', event_id=event['id']) }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-people me-1"></i> View Registered Students
+                            </a>
+                        {% elif already_registered %}
+                            <div class="alert alert-success text-center py-2 mb-3">
+                                <i class="bi bi-check-circle-fill me-1"></i> You are already registered for this event!
+                            </div>
+                            <a href="{{ url_for('student_dashboard') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-ticket-perforated me-1"></i> View in My Dashboard
+                            </a>
+                        {% elif registered_count >= event['max_participants'] %}
+                            <div class="alert alert-danger text-center py-2 mb-3">
+                                <i class="bi bi-x-circle-fill me-1"></i> Registrations Full!
+                            </div>
+                            <button class="btn btn-secondary w-100" disabled>Seats Full</button>
+                        {% else %}
+                            <form action="{{ url_for('register_for_event', event_id=event['id']) }}" method="POST">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 shadow">
+                                    <i class="bi bi-check2-circle me-1"></i> Register for Event
+                                </button>
+                            </form>
+                            <small class="text-muted text-center d-block mt-2">Free registration for college students.</small>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-light border text-center small mb-3">
+                            Please log in with your student credentials to register for this event.
+                        </div>
+                        <a href="{{ url_for('login') }}" class="btn btn-primary w-100 mb-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login to Register
+                        </a>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-secondary w-100 btn-sm">
+                            New Student? Sign Up Here
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Event - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="custom-card p-4 p-sm-5">
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-0">Create New College Event</h4>
+                        <small class="text-muted">Fill out the details to publish an event on the campus portal</small>
+                    </div>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+
+                <form method="POST" action="{{ url_for('add_event') }}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label small fw-bold text-dark">Event Title *</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="e.g. CodeCraft 2026 - Coding Competition" required>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="category" class="form-label small fw-bold text-dark">Category *</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="Technical">Technical</option>
+                                <option value="Cultural">Cultural</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Technical Seminar">Technical Seminar</option>
+                                <option value="Exhibition">Exhibition</option>
+                                <option value="Workshop">Workshop</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="max_participants" class="form-label small fw-bold text-dark">Max Participants Limit</label>
+                            <input type="number" class="form-control" id="max_participants" name="max_participants" value="100" min="10">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="date" class="form-label small fw-bold text-dark">Event Date *</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="time" class="form-label small fw-bold text-dark">Event Time Slot *</label>
+                            <input type="text" class="form-control" id="time" name="time" placeholder="e.g. 10:00 AM - 01:00 PM" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="venue" class="form-label small fw-bold text-dark">Event Venue *</label>
+                        <input type="text" class="form-control" id="venue" name="venue" placeholder="e.g. Computer Lab 3 / College Auditorium" required>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="coordinator" class="form-label small fw-bold text-dark">Faculty Coordinator Name *</label>
+                            <input type="text" class="form-control" id="coordinator" name="coordinator" placeholder="e.g. Prof. R. K. Joshi" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="coordinator_phone" class="form-label small fw-bold text-dark">Coordinator Contact Number</label>
+                            <input type="tel" class="form-control" id="coordinator_phone" name="coordinator_phone" placeholder="e.g. 9820011223">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label small fw-bold text-dark">Cover Image URL</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://images.unsplash.com/photo-...">
+                        <small class="text-muted">Leave empty to use a default event cover image.</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="form-label small fw-bold text-dark">Detailed Description & Rules *</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Describe the competition format, eligibility, rules, programming languages allowed, or stages..." required></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">
+                            <i class="bi bi-check-lg me-1"></i> Publish Event
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

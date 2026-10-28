@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Administrator Dashboard - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Admin Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <span class="badge bg-danger-subtle text-danger fw-bold px-3 py-1 rounded-pill mb-1">
+                <i class="bi bi-shield-lock-fill me-1"></i> Admin Console
+            </span>
+            <h2 class="fw-bold text-dark mb-0">Event Administration Dashboard</h2>
+            <p class="text-muted small mb-0">Manage college events, view student registrations, and monitor campus engagement.</p>
+        </div>
+        <a href="{{ url_for('add_event') }}" class="btn btn-primary fw-bold shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> Add New Event
+        </a>
+    </div>
+
+    <!-- Admin KPI Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-number">{{ total_events }}</div>
+                <div class="stat-label">Total Events Scheduled</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-label">Total Registered Students</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-number">{{ total_registrations }}</div>
+                <div class="stat-label">Total Student Registrations</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events Management Table -->
+    <div class="custom-card p-4 mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">All Scheduled Events</h5>
+            <span class="badge bg-light text-muted">{{ events|length }} Events</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle small mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date & Time</th>
+                        <th>Venue</th>
+                        <th>Coordinator</th>
+                        <th>Registrations</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('event_detail', event_id=event['id']) }}" class="fw-bold text-dark text-decoration-none">
+                                    {{ event['title'] }}
+                                </a>
+                            </td>
+                            <td><span class="badge-category">{{ event['category'] }}</span></td>
+                            <td>
+                                <div>{{ event['date'] }}</div>
+                                <small class="text-muted">{{ event['time'] }}</small>
+                            </td>
+                            <td>{{ event['venue'] }}</td>
+                            <td>{{ event['coordinator'] }}</td>
+                            <td>
+                                <a href="{{ url_for('event_registrations', event_id=event['id']) }}" class="badge bg-primary text-white text-decoration-none">
+                                    {{ event['reg_count'] }} / {{ event['max_participants'] }} Students
+                                </a>
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ url_for('event_registrations', event_id=event['id']) }}" class="btn btn-outline-info btn-sm me-1" title="View Students">
+                                    <i class="bi bi-people"></i>
+                                </a>
+                                <a href="{{ url_for('edit_event', event_id=event['id']) }}" class="btn btn-outline-secondary btn-sm me-1" title="Edit Event">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="{{ url_for('delete_event', event_id=event['id']) }}" method="POST" class="d-inline" onsubmit="return confirmDelete('{{ event['title'] }}');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete Event">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">No events currently scheduled.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Registrations Stream -->
+    <div class="custom-card p-4">
+        <h5 class="fw-bold text-dark mb-3">Recent Student Registrations Stream</h5>
+
+        {% if recent_registrations %}
+            <div class="table-responsive">
+                <table class="table table-sm align-middle small mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Roll No</th>
+                            <th>Department</th>
+                            <th>Registered Event</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in recent_registrations %}
+                            <tr>
+                                <td class="fw-semibold text-dark">{{ reg['student_name'] }}</td>
+                                <td>{{ reg['roll_no'] or 'N/A' }}</td>
+                                <td>{{ reg['department'] or 'Computer Science' }}</td>
+                                <td><span class="badge bg-light text-dark border">{{ reg['event_title'] }}</span></td>
+                                <td class="text-muted">{{ reg['registered_at'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted small mb-0">No registrations recorded yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

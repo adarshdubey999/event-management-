@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Registration - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="custom-card p-4 p-sm-5">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex p-3 mb-2">
+                        <i class="bi bi-person-plus-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark">Student Registration</h4>
+                    <p class="text-muted small">Create your student account to register for college events</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="name" class="form-label small fw-bold text-dark">Full Name *</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Priya Sharma" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="roll_no" class="form-label small fw-bold text-dark">College Roll No</label>
+                            <input type="text" class="form-control" id="roll_no" name="roll_no" placeholder="e.g. TYCS-101">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label small fw-bold text-dark">College Email Address *</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="priya@college.edu" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label small fw-bold text-dark">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Minimum 6 characters" required>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="department" class="form-label small fw-bold text-dark">Department / Branch</label>
+                            <select class="form-select" id="department" name="department">
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Data Science & AI">Data Science & AI</option>
+                                <option value="Physics & Electronics">Physics & Electronics</option>
+                                <option value="Management Studies">Management Studies</option>
+                                <option value="Commerce & Accounts">Commerce & Accounts</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="year" class="form-label small fw-bold text-dark">Academic Year</label>
+                            <select class="form-select" id="year" name="year">
+                                <option value="TYBSc">TYBSc (Third Year)</option>
+                                <option value="SYBSc">SYBSc (Second Year)</option>
+                                <option value="FYBSc">FYBSc (First Year)</option>
+                                <option value="MSc Part 1">MSc Part 1</option>
+                                <option value="MSc Part 2">MSc Part 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="phone" class="form-label small fw-bold text-dark">Mobile Contact Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 9876543210">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                        <i class="bi bi-check2-circle me-1"></i> Register Student Account
+                    </button>
+                </form>
+
+                <div class="text-center mt-4 small text-muted border-top pt-3">
+                    Already registered? 
+                    <a href="{{ url_for('login') }}" class="fw-bold text-primary text-decoration-none">Log in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

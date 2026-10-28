@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center max-w-2xl mx-auto mb-5">
+        <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1 rounded-pill mb-2">
+            Campus Helpdesk
+        </span>
+        <h2 class="fw-bold text-dark">Contact College Event Committee</h2>
+        <p class="text-muted small">Have queries regarding event schedules, participation rules, or certificates? Send us a message.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Contact Info -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100 bg-primary text-white">
+                <h4 class="fw-bold mb-4">Event Coordination Office</h4>
+                <div class="space-y-4 small mb-4">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-geo-alt-fill fs-5 text-white-50"></i>
+                        <div>
+                            <span class="fw-bold d-block">Campus Address</span>
+                            <span>Department of Computer Science, 3rd Floor, Science Block, Main University Campus</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-telephone-fill fs-5 text-white-50"></i>
+                        <div>
+                            <span class="fw-bold d-block">Helpline</span>
+                            <span>+91 98200 11223 (10 AM to 5 PM)</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-envelope-fill fs-5 text-white-50"></i>
+                        <div>
+                            <span class="fw-bold d-block">Official Email</span>
+                            <span>events@college.edu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-10 p-3 rounded-3 small">
+                    <span class="fw-bold d-block mb-1"><i class="bi bi-clock me-1"></i> Office Hours:</span>
+                    <span>Monday to Saturday: 09:30 AM – 04:30 PM (Closed on Sundays & Public Holidays)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+            <div class="custom-card p-4 p-sm-5 h-100">
+                <h4 class="fw-bold text-dark mb-3">Send an Inquiry</h4>
+                <form method="POST" action="{{ url_for('contact') }}">
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <label for="name" class="form-label small fw-bold text-dark">Your Name *</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Priya Sharma" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="email" class="form-label small fw-bold text-dark">Your Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="priya@college.edu" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subject" class="form-label small fw-bold text-dark">Subject / Event Name *</label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="e.g. Query regarding CodeCraft eligibility" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="message" class="form-label small fw-bold text-dark">Your Message *</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your inquiry or question here..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">
+                        <i class="bi bi-send me-1"></i> Submit Inquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

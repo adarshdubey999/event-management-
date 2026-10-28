@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Upcoming Events - Smart College Event Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-4">
+        <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1 rounded-pill mb-2">
+            Campus Calendar
+        </span>
+        <h2 class="fw-bold text-dark">Upcoming College Events</h2>
+        <p class="text-muted small">Explore scheduled competitions, fests, and workshops. Register online to participate.</p>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="bg-white p-4 rounded-4 border shadow-sm mb-4">
+        <form method="GET" action="{{ url_for('events') }}" class="row g-3 align-items-center">
+            <div class="col-md-7">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-start-0" placeholder="Search event by name (e.g. CodeCraft, Tarang, Seminar)..." value="{{ search_query }}">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                {% if search_query or selected_category %}
+                    <a href="{{ url_for('events') }}" class="btn btn-outline-secondary" title="Reset Filters">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="row g-4">
+        {% for event in events %}
+            <div class="col-md-4">
+                <div class="custom-card h-100 d-flex flex-column">
+                    <img src="{{ event['image_url'] }}" class="event-img" alt="{{ event['title'] }}">
+                    <div class="p-4 d-flex flex-column flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge-category">{{ event['category'] }}</span>
+                            <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ event['date'] }}</small>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">{{ event['title'] }}</h5>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            {{ event['description'][:120] }}...
+                        </p>
+                        <div class="small text-secondary mb-3">
+                            <div><i class="bi bi-geo-alt-fill text-primary me-1"></i><strong>Venue:</strong> {{ event['venue'] }}</div>
+                            <div><i class="bi bi-clock-fill text-primary me-1"></i><strong>Time:</strong> {{ event['time'] }}</div>
+                            <div><i class="bi bi-person-badge text-primary me-1"></i><strong>Coordinator:</strong> {{ event['coordinator'] }}</div>
+                        </div>
+                        <a href="{{ url_for('event_detail', event_id=event['id']) }}" class="btn btn-primary btn-sm w-100">
+                            View Event & Register <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <div class="p-5 bg-white rounded-4 border">
+                    <i class="bi bi-search text-muted fs-1 mb-3 d-block"></i>
+                    <h5 class="fw-bold text-dark">No Events Match Your Search</h5>
+                    <p class="text-muted small">Try searching with a different keyword or resetting the category filter.</p>
+                    <a href="{{ url_for('events') }}" class="btn btn-outline-primary btn-sm">Clear Filters</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

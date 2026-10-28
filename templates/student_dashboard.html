@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Student Profile Card -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4">
+                <div class="text-center mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-2 fs-3 shadow-sm">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-0">{{ student['name'] }}</h5>
+                    <span class="badge bg-primary-subtle text-primary mt-1">Student Account</span>
+                </div>
+
+                <hr class="my-3">
+
+                <div class="small text-secondary space-y-2">
+                    <div><strong>Roll No:</strong> {{ student['roll_no'] or 'N/A' }}</div>
+                    <div><strong>Department:</strong> {{ student['department'] or 'Computer Science' }}</div>
+                    <div><strong>Year:</strong> {{ student['year'] or 'TYBSc' }}</div>
+                    <div><strong>Email:</strong> {{ student['email'] }}</div>
+                    <div><strong>Phone:</strong> {{ student['phone'] or 'N/A' }}</div>
+                </div>
+
+                <hr class="my-3">
+
+                <a href="{{ url_for('events') }}" class="btn btn-outline-primary btn-sm w-100">
+                    <i class="bi bi-search me-1"></i> Browse More Events
+                </a>
+            </div>
+        </div>
+
+        <!-- Registered Events Table -->
+        <div class="col-lg-8">
+            <div class="custom-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0">My Registered Events</h5>
+                        <small class="text-muted">Total Registrations: {{ registrations|length }}</small>
+                    </div>
+                    <a href="{{ url_for('events') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle me-1"></i> Register for Event
+                    </a>
+                </div>
+
+                {% if registrations %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Event Title</th>
+                                    <th>Date & Time</th>
+                                    <th>Venue</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reg in registrations %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('event_detail', event_id=reg['event_id']) }}" class="fw-bold text-dark text-decoration-none">
+                                                {{ reg['title'] }}
+                                            </a>
+                                            <div class="text-muted" style="font-size: 0.75rem;">{{ reg['category'] }}</div>
+                                        </td>
+                                        <td>
+                                            <div>{{ reg['date'] }}</div>
+                                            <small class="text-muted">{{ reg['time'] }}</small>
+                                        </td>
+                                        <td>{{ reg['venue'] }}</td>
+                                        <td>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                                <i class="bi bi-check-circle-fill me-1"></i> {{ reg['status'] }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <!-- Print Slip Button Trigger -->
+                                            <button type="button" class="btn btn-outline-secondary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#passModal{{ reg['reg_id'] }}" title="View Entry Pass">
+                                                <i class="bi bi-ticket-detailed"></i> Pass
+                                            </button>
+
+                                            <!-- Cancel Button -->
+                                            <form action="{{ url_for('cancel_registration', reg_id=reg['reg_id']) }}" method="POST" class="d-inline" onsubmit="return confirmCancel('{{ reg['title'] }}');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Cancel Registration">
+                                                    <i class="bi bi-x-circle"></i> Cancel
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Entry Pass Modal for this event -->
+                                    <div class="modal fade" id="passModal{{ reg['reg_id'] }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content p-3 border-2 border-primary">
+                                                <div class="modal-header border-0 pb-0">
+                                                    <h5 class="modal-title fw-bold text-primary">
+                                                        <i class="bi bi-qr-code me-1"></i> Event Entry Pass
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body text-center py-4">
+                                                    <div class="p-3 bg-light rounded-3 border mb-3">
+                                                        <h5 class="fw-bold text-dark mb-1">{{ reg['title'] }}</h5>
+                                                        <span class="badge bg-primary mb-3">{{ reg['category'] }}</span>
+                                                        <div class="row text-start small g-2 pt-2 border-top">
+                                                            <div class="col-6"><strong>Student:</strong> {{ student['name'] }}</div>
+                                                            <div class="col-6"><strong>Roll No:</strong> {{ student['roll_no'] or 'N/A' }}</div>
+                                                            <div class="col-6"><strong>Date:</strong> {{ reg['date'] }}</div>
+                                                            <div class="col-6"><strong>Time:</strong> {{ reg['time'] }}</div>
+                                                            <div class="col-12"><strong>Venue:</strong> {{ reg['venue'] }}</div>
+                                                            <div class="col-12"><strong>Coordinator:</strong> {{ reg['coordinator'] }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-success small fw-semibold">
+                                                        <i class="bi bi-shield-check me-1"></i> Verified College Registration • Entry Admitted
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-0 pt-0 justify-content-center">
+                                                    <button type="button" class="btn btn-primary btn-sm px-4" onclick="window.print();">
+                                                        <i class="bi bi-printer me-1"></i> Print Pass
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 bg-light rounded-3 border">
+                        <i class="bi bi-calendar-x text-muted fs-1 mb-2 d-block"></i>
+                        <h6 class="fw-bold text-dark">No Events Registered Yet</h6>
+                        <p class="text-muted small mb-3">You haven't signed up for any college competitions or festivals yet.</p>
+                        <a href="{{ url_for('events') }}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-search me-1"></i> Explore Upcoming Events
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Smart Event Management System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-5">
+        <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-1 rounded-pill mb-2">
+            Project Overview
+        </span>
+        <h2 class="fw-bold text-dark">About the Smart Event Management System</h2>
+        <p class="text-muted">An automated web application engineered for college campus event coordination.</p>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3">
+                        <i class="bi bi-bullseye fs-3"></i>
+                    </div>
+                    <h4 class="fw-bold mb-0">Project Objectives</h4>
+                </div>
+                <p class="text-muted small leading-relaxed">
+                    In traditional college environments, event notices are posted on physical notice boards or fragmented WhatsApp groups, while student registrations rely on manual paper lists or scattered Google Forms.
+                </p>
+                <ul class="text-muted small ps-3 space-y-2">
+                    <li>Provide a centralized catalog for all departmental and collegiate events.</li>
+                    <li>Allow students to discover event details, schedules, and coordinators in real time.</li>
+                    <li>Enable one-click event registration while automatically blocking duplicate entries.</li>
+                    <li>Empower administrators to manage events and export student registration rosters effortlessly.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="custom-card p-4 h-100">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3">
+                        <i class="bi bi-lightbulb-fill fs-3"></i>
+                    </div>
+                    <h4 class="fw-bold mb-0">Academic Scope & Significance</h4>
+                </div>
+                <p class="text-muted small leading-relaxed">
+                    This mini project is specifically designed for <strong>TYBSc Computer Science</strong> students. It highlights practical full-stack development skills:
+                </p>
+                <ul class="text-muted small ps-3 space-y-2">
+                    <li><strong>Backend Architecture:</strong> Modular Python Flask routing with session management and password hashing.</li>
+                    <li><strong>Relational Storage:</strong> SQLite database schema with foreign keys, constraints, and cascade management.</li>
+                    <li><strong>Responsive UI:</strong> Bootstrap 5 grid layout ensuring complete mobile and desktop adaptability.</li>
+                    <li><strong>Security:</strong> Werkzeug hashing and role-based route decorators preventing unauthorized administrative access.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Categories Managed -->
+    <div class="bg-white p-5 rounded-4 border shadow-sm mb-5">
+        <h4 class="fw-bold text-dark text-center mb-4">Event Categories Managed by the System</h4>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light">
+                    <i class="bi bi-laptop text-primary fs-2 mb-2 d-block"></i>
+                    <h6 class="fw-bold">Technical Competitions</h6>
+                    <p class="text-muted small mb-0">Hackathons, coding challenges, web designing, paper presentations, and LAN gaming.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light">
+                    <i class="bi bi-music-note-beamed text-primary fs-2 mb-2 d-block"></i>
+                    <h6 class="fw-bold">Cultural Festivals</h6>
+                    <p class="text-muted small mb-0">Music, classical & western dance, theatre, fine arts, photography, and fashion shows.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light">
+                    <i class="bi bi-dribbble text-primary fs-2 mb-2 d-block"></i>
+                    <h6 class="fw-bold">Sports & Athletics</h6>
+                    <p class="text-muted small mb-0">Inter-department tournaments in box cricket, football, volleyball, badminton, and chess.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Committee & Contact Card -->
+    <div class="custom-card p-4 text-center">
+        <h5 class="fw-bold mb-2">Organized by College Event Coordination Cell</h5>
+        <p class="text-muted small max-w-xl mx-auto mb-3">
+            In collaboration with Department of Computer Science. For special permissions or departmental queries, please visit the coordinator office.
+        </p>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-envelope me-1"></i> Contact Committee
+        </a>
+    </div>
+</div>
+{% endblock %}
